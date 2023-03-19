@@ -1,0 +1,43 @@
+{% extends "layout/base.html" %}
+{% block style %}
+<link rel="stylesheet" href="style.css">
+{{ style }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <button class="m-3 btn btn-secondary" onclick="history.back()">Go Back</button>
+    <div class="row d-flex justify-content-center">
+        <video controls="" autoplay="" style="width: 800px;" name="media">
+            <source src={{ dataUtama[0].url }} type="video/mp4">
+        </video>
+        <div class="result mt-5">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Download</th>
+                        <th>Mime Type</th>
+                        <th>Width</th>
+                        <th>Height</th>
+                        <th>Quality</th>
+                        <th>Quality Label</th>
+                        <th>Audio Quality</th>
+                        <th>Audio Sample Rate</th>
+                    </tr>
+                </thead>
+                {% for data in listData %}
+                <tr>
+                    <td><a target="_blank" href={{ data.url }} class="btn btn-success">Download</a></td>
+                    <td>{{ data.mimeType }}</td>
+                    <td>{{ data.width }}</td>
+                    <td>{{ data.height }}</td>
+                    <td>{{ data.quality }}</td>
+                    <td>{{ data.qualityLabel }}</td>
+                    <td>{{ data.audioQuality }}</td>
+                    <td>{{ data.audioSampleRate }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

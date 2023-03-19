@@ -1,0 +1,62 @@
+{% extends "layout/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container mt-5 p-5">
+    <div class="search-section">
+        <h1>Youtube Downloader</h1>
+        <form class="d-flex" id="search-form">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <hr>
+    </div>
+    <div class="card mt-2" id="contoh-detail-video" hidden="true">
+        <div class="card-body p-3">
+            <div class="row">
+                <div class="col-lg-4">
+                    <img src="" alt="" style="width: 100%;">
+                </div>
+                <div class="col-lg-6 p-4">
+                    <h4>Judul</h4>
+                    <h6>Channel</h6>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus laudantium amet alias ab, ducimus tenetur repellendus maxime? Sed perferendis, repudiandae eaque vitae fugit quisquam esse itaque ratione? Modi, odit ab.</p>
+                    <p>kkk</p>
+                    <a class="btn btn-danger mt-3" href="">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="result-section" id="result-section">
+    </div>
+
+</div>
+<script>
+    document.getElementById("search-form").addEventListener("submit", function (event) {
+        event.preventDefault()
+        value = this.children[0].value
+        $.get("https://www.googleapis.com/youtube/v3/search?key=AIzaSyCkzcwSJNguHaybXQyYwZmfcpPEo4fVYQ8&type=video&part=snippet&maxResults=50&q=" + value, function (data, status) {
+            console.log(data)
+            document.getElementById("result-section").innerHTML = '';
+            data.items.map((data)=>{
+                const clone = document.getElementById("contoh-detail-video").cloneNode(true)
+                clone.hidden = false
+                const imageSection = clone.children[0].children[0].children[0]
+                const detailSection = clone.children[0].children[0].children[1]
+                imageSection.children[0].src = data.snippet.thumbnails.high.url
+                // imageSection.children[0].width = data.snippet.thumbnails.high.width
+                // imageSection.children[0].height = data.snippet.thumbnails.high.height
+                detailSection.children[0].innerHTML = data.snippet.title
+                detailSection.children[1].innerHTML = data.snippet.channelTitle
+                detailSection.children[2].innerHTML = data.snippet.description
+                detailSection.children[3].innerHTML = data.snippet.publishedAt.split('T')[0]
+                detailSection.children[4].href = window.location+'detail/'+data.id.videoId
+                document.getElementById("result-section").append(clone)
+            })
+        });
+    });
+</script>
+ <!-- <iframe
+            src="https://rr3---sn-2uuxa3vh-cqvz.googlevideo.com/videoplayback?expire=1678808278&ei=dkAQZOOJFeykg8UPp5WJcA&ip=2001%3A448a%3A304e%3A58da%3A7a85%3Af212%3A1104%3A6aba&id=o-AGLR73UAmQX2Wqu-TTYMRNAPVRpguluEDwuApaTwyFi_&itag=18&source=youtube&requiressl=yes&mh=Vt&mm=31%2C29&mn=sn-2uuxa3vh-cqvz%2Csn-npoe7nsl&ms=au%2Crdu&mv=m&mvi=3&pl=53&initcwndbps=581250&vprv=1&mime=video%2Fmp4&gir=yes&clen=17458301&ratebypass=yes&dur=353.059&lmt=1678674977212065&mt=1678786403&fvip=5&fexp=24007246&c=ANDROID&txp=6219224&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cgir%2Cclen%2Cratebypass%2Cdur%2Clmt&sig=AOq0QJ8wRgIhAIFXVW02XYAp-ObSv1NUk4UtvfTWgg7rD2QnCAmFTpJrAiEAzqO_I0CEEW_DDte-dRIbJssRuNuu9jQh8M8EvwkNhRU%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRgIhAO4qUYWTpd59hRl11Vto6Jflk5E4_qSbLEdnNXMdFwkAAiEAuZRq-dqCNg9biQ7gPTT6pLTbcClMlqkdH0J_jsMkPTc%3D"
+            width="560" height="316" frameborder="0" allowfullscreen="true"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe> -->
+{% endblock %}

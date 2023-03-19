@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^/? http://ytunduh.epizy.com/public/
